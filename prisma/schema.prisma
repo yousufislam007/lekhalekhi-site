@@ -1,0 +1,30 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// category: "golpo" (ছোট গল্প) | "kobita" (কবিতা) | "uponnash" (উপন্যাস)
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  excerpt   String?
+  content   String
+  category  String
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Video {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  filename    String
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
