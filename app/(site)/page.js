@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import PostCard from "@/components/PostCard";
 import VideoCard from "@/components/VideoCard";
+import Newsletter from "@/components/Newsletter";
 
 async function getHomeData() {
   const [featured, golpo, kobita, uponnash, videos] = await Promise.all([
@@ -168,6 +169,49 @@ export default async function HomePage() {
     </div>
   </section>
 )}
+
+<Section
+  title="📖 সর্বশেষ ছোট গল্প"
+  href="/chuto-golpo"
+  posts={golpo}
+/>
+
+<Section
+  title="✍️ সাম্প্রতিক কবিতা"
+  href="/kobita"
+  posts={kobita}
+/>
+
+<Section
+  title="📚 চলমান উপন্যাস"
+  href="/uponnash"
+  posts={uponnash}
+/>
+
+{videos.length > 0 && (
+  <section>
+    <div className="mb-8 flex items-center justify-between">
+      <h2 className="text-3xl font-bold">
+        🎥 সাম্প্রতিক ভিডিও
+      </h2>
+
+      <Link
+        href="/videos"
+        className="font-medium text-emerald-700 hover:underline"
+      >
+        সব ভিডিও →
+      </Link>
+    </div>
+
+    <div className="grid gap-8 md:grid-cols-2">
+      {videos.map((video) => (
+        <VideoCard key={video.id} video={video} />
+      ))}
+    </div>
+  </section>
+)}
+
+<Newsletter />
 
     </main>
   );
