@@ -21,6 +21,43 @@ export default function PostForm({ initialData, postId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const [featuredImage, setFeaturedImage] = useState(
+  initialData?.featuredImage || ""
+);
+
+const [uploading, setUploading] = useState(false);
+
+async function handleImageUpload(e) {
+  const file = e.target.files?.[0];
+
+  if (!file) return;
+
+  try {
+    setUploading(true);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (data.url) {
+      setFeaturedImage(data.url);
+    } else {
+      alert(data.error || "Upload failed");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Upload failed");
+  } finally {
+    setUploading(false);
+  }
+}
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -32,7 +69,7 @@ export default function PostForm({ initialData, postId }) {
     const res = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, category, excerpt, content, published }),
+      body: JSON.stringify({ title, category, excerpt, content,featuredImage, published }),
     });
 
     setLoading(false);
@@ -86,6 +123,33 @@ export default function PostForm({ initialData, postId }) {
           className="w-full border border-brand-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
         />
       </div>
+
+      <div className="space-y-3">
+  <label className="block text-sm font-medium">
+    Featured Image
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={handleImageUpload}
+    className="block w-full border rounded-lg p-2"
+  />
+
+  {uploading && (
+    <p className="text-sm text-emerald-700">
+      Uploading image...
+    </p>
+  )}
+
+  {featuredImage && (
+    <img
+      src={featuredImage}
+      alt="Preview"
+      className="w-full max-h-72 rounded-xl object-cover border"
+    />
+  )}
+</div>
 
       <div>
         <label className="block text-sm font-medium mb-1">লেখার মূল অংশ</label>

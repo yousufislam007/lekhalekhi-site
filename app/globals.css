@@ -7,11 +7,125 @@ html {
 }
 
 body {
-  background-color: #fdfaf6;
+  background: #fdfaf6;
   color: #2b2118;
 }
 
+/* ===========================
+   Typography
+=========================== */
+
 .prose-bangla {
+  font-size: 1.12rem;
   line-height: 2.1;
-  font-size: 1.125rem;
+  color: #2b2118;
+}
+
+.prose-bangla h1,
+.prose-bangla h2,
+.prose-bangla h3,
+.prose-bangla h4 {
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose-bangla p {
+  margin: 1rem 0;
+}
+
+.prose-bangla img {
+  width: 100%;
+  border-radius: 18px;
+  margin: 2rem 0;
+}
+
+.prose-bangla blockquote {
+  border-left: 4px solid #10b981;
+  padding-left: 1rem;
+  color: #555;
+  margin: 1.5rem 0;
+  font-style: italic;
+}
+
+.prose-bangla pre {
+  background: #111827;
+  color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.prose-bangla code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* ===========================
+   Tiptap Editor
+=========================== */
+
+.ProseMirror {
+  min-height: 420px;
+  padding: 20px;
+  outline: none;
+  line-height: 1.9;
+  font-size: 17px;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+  float: left;
+  height: 0;
+}
+
+.ProseMirror img {
+  width: 100%;
+  border-radius: 14px;
+  margin: 20px 0;
+}
+
+.ProseMirror h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.ProseMirror h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.ProseMirror h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5rem;
+}
+
+.ProseMirror blockquote {
+  border-left: 4px solid #10b981;
+  padding-left: 1rem;
+  color: #555;
+}
+
+.ProseMirror pre {
+  background: #111827;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.ProseMirror a {
+  color: #0f766e;
+  text-decoration: underline;
 }

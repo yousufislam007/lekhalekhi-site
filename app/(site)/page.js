@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import PostCard from "@/components/PostCard";
@@ -152,19 +153,45 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Right */}
-      <div className="flex items-center justify-center bg-gray-100 p-12">
-        <div className="text-center">
-          <div className="text-8xl">📚</div>
+     {/* Right */}
+<div className="relative min-h-[420px]">
+  {featured.featuredImage ? (
+    <>
+      <Image
+        src={featured.featuredImage}
+        alt={featured.title}
+        fill
+        priority
+        className="object-cover"
+      />
 
-          <h3 className="mt-5 text-2xl font-bold text-gray-800">
-            আজকের নির্বাচিত লেখা
-          </h3>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
 
-          <p className="mt-3 text-gray-600">
-            আমাদের সর্বশেষ প্রকাশিত গল্প, কবিতা বা উপন্যাস।
-          </p>
-        </div>
+      <div className="absolute bottom-6 left-6 right-6">
+        <p className="text-white/80 text-sm">
+          সর্বশেষ প্রকাশিত লেখা
+        </p>
+
+        <h3 className="mt-2 text-3xl font-bold text-white">
+          {featured.title}
+        </h3>
+      </div>
+    </>
+  ) : (
+    <div className="flex h-full items-center justify-center bg-gray-100">
+      <div className="text-center">
+        <div className="text-8xl">📚</div>
+
+        <h3 className="mt-5 text-2xl font-bold text-gray-800">
+          আজকের নির্বাচিত লেখা
+        </h3>
+
+        <p className="mt-3 text-gray-600">
+          আমাদের সর্বশেষ প্রকাশিত গল্প, কবিতা বা উপন্যাস।
+        </p>
+      </div>
+    </div>
+  )}
       </div>
     </div>
   </section>
