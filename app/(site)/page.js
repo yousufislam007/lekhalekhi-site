@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -40,6 +41,20 @@ async function getHomeData() {
       take: 2,
     }),
   ]);
+
+console.log({
+  featured,
+  golpo,
+  kobita,
+  uponnash,
+  videos,
+});
+
+console.log("Featured:", featured);
+console.log("Golpo:", golpo);
+console.log("Kobita:", kobita);
+console.log("Uponnash:", uponnash);
+console.log("Videos:", videos);
 
   return {
     featured,
@@ -120,7 +135,7 @@ export default async function HomePage() {
 
       </section>
 
-      {featured && (
+{featured && (
   <section className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl">
     <div className="grid lg:grid-cols-2">
       {/* Left */}
@@ -153,45 +168,46 @@ export default async function HomePage() {
         </div>
       </div>
 
-     {/* Right */}
-<div className="relative min-h-[420px]">
-  {featured.featuredImage ? (
-    <>
-      <Image
-        src={featured.featuredImage}
-        alt={featured.title}
-        fill
-        priority
-        className="object-cover"
-      />
+      {/* Right */}
+      <div className="relative h-[420px] bg-gray-100">
+        {featured.featuredImage ? (
+          <>
+            <Image
+              src={featured.featuredImage}
+              alt={featured.title}
+              fill
+              priority
+              sizes="(max-width:1024px) 100vw, 50vw"
+              className="object-cover"
+            />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-      <div className="absolute bottom-6 left-6 right-6">
-        <p className="text-white/80 text-sm">
-          সর্বশেষ প্রকাশিত লেখা
-        </p>
+            <div className="absolute bottom-6 left-6 right-6">
+              <p className="text-sm text-white/80">
+                সর্বশেষ প্রকাশিত লেখা
+              </p>
 
-        <h3 className="mt-2 text-3xl font-bold text-white">
-          {featured.title}
-        </h3>
-      </div>
-    </>
-  ) : (
-    <div className="flex h-full items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <div className="text-8xl">📚</div>
+              <h3 className="mt-2 text-3xl font-bold text-white">
+                {featured.title}
+              </h3>
+            </div>
+          </>
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <div className="text-center">
+              <div className="text-8xl">📚</div>
 
-        <h3 className="mt-5 text-2xl font-bold text-gray-800">
-          আজকের নির্বাচিত লেখা
-        </h3>
+              <h3 className="mt-5 text-2xl font-bold text-gray-800">
+                আজকের নির্বাচিত লেখা
+              </h3>
 
-        <p className="mt-3 text-gray-600">
-          আমাদের সর্বশেষ প্রকাশিত গল্প, কবিতা বা উপন্যাস।
-        </p>
-      </div>
-    </div>
-  )}
+              <p className="mt-3 text-gray-600">
+                আমাদের সর্বশেষ প্রকাশিত গল্প, কবিতা বা উপন্যাস।
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   </section>
