@@ -1,23 +1,73 @@
-import { prisma } from '@/lib/prisma';
-import PostCard from '@/components/PostCard';
+import { prisma } from "@/lib/prisma";
+import PostCard from "@/components/PostCard";
+import Pagination from "@/components/Pagination";
 
-export const metadata = { title: 'কবিতা | আমার লেখালেখি' };
+export const metadata = {
+  title: "কবিতা | আমার লেখালেখি",
+};
 
-export default async function KobitaListPage() {
-  const posts = await prisma.post.findMany({
-    where: { category: 'kobita', published: true },
-    orderBy: { createdAt: 'desc' },
+export default async function KobitaListPage({
+  searchParams,
+}) {
+  const page = Math.max(
+    1,
+    Number(searchParams?.page) || 1
+  );
+
+  const POSTS_PER_PAGE = 6;
+
+  const totalPosts = await prisma.post.count({
+    where: {
+      category: "kobita",
+      published: true,
+    },
   });
+
+  const posts = await prisma.post.findMany({
+    where: {
+      category: "kobita",
+      published: true,
+    },
+
+    orderBy: {
+      createdAt: "desc",
+    },
+
+    skip: (page - 1) * POSTS_PER_PAGE,
+
+    take: POSTS_PER_PAGE,
+  });
+
+  const totalPages = Math.ceil(
+    totalPosts / POSTS_PER_PAGE
+  );
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-brand-700 mb-8">কবিতা</h1>
+      <h1 className="mb-8 text-3xl font-bold text-brand-700">
+        কবিতা
+      </h1>
+
       {posts.length === 0 ? (
-        <p className="text-brand-900/60">এখনো কোনো কবিতা যোগ করা হয়নি।</p>
+        <p className="text-brand-900/60">
+          এখনো কোনো কবিতা যোগ করা হয়নি।
+        </p>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {posts.map((p) => <PostCard key={p.id} post={p} />)}
-        </div>
+        <>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((p) => (
+              <PostCard
+                key={p.id}
+                post={p}
+              />
+            ))}
+          </div>
+
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+          />
+        </>
       )}
     </div>
   );

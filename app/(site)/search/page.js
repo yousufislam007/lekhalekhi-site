@@ -8,6 +8,10 @@ export default function SearchPage() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+const POSTS_PER_PAGE = 6;
+
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -24,6 +28,7 @@ export default function SearchPage() {
 
         const data = await res.json();
         setResults(data);
+        setCurrentPage(1); // Reset to first page on new search
       } catch (err) {
         console.error(err);
       }
@@ -33,6 +38,15 @@ export default function SearchPage() {
 
     return () => clearTimeout(timer);
   }, [query]);
+
+const totalPages = Math.ceil(
+  results.length / POSTS_PER_PAGE
+);
+
+const currentResults = results.slice(
+  (currentPage - 1) * POSTS_PER_PAGE,
+  currentPage * POSTS_PER_PAGE
+);
 
   return (
     <div className="mx-auto max-w-5xl py-16">
@@ -63,7 +77,7 @@ export default function SearchPage() {
 
       <div className="mt-10 space-y-6">
 
-        {results.map((post) => (
+        {currentResults.map((post) => (
 
           <Link
             key={post.id}
@@ -92,6 +106,50 @@ export default function SearchPage() {
         ))}
 
       </div>
+
+      {totalPages > 1 && (
+  <div className="mt-10 flex items-center justify-center gap-2">
+    <button
+      onClick={() =>
+        setCurrentPage((p) => Math.max(p - 1, 1))
+      }
+      disabled={currentPage === 1}
+      className="rounded-lg border px-4 py-2 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      ← Previous
+    </button>
+
+    {Array.from({ length: totalPages }).map((_, index) => {
+      const page = index + 1;
+
+      return (
+        <button
+          key={page}
+          onClick={() => setCurrentPage(page)}
+          className={`rounded-lg border px-4 py-2 transition ${
+            page === currentPage
+              ? "bg-emerald-600 text-white"
+              : "hover:bg-emerald-100"
+          }`}
+        >
+          {page}
+        </button>
+      );
+    })}
+
+    <button
+      onClick={() =>
+        setCurrentPage((p) =>
+          Math.min(p + 1, totalPages)
+        )
+      }
+      disabled={currentPage === totalPages}
+      className="rounded-lg border px-4 py-2 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Next →
+    </button>
+  </div>
+)}
 
     </div>
   );

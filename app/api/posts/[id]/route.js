@@ -38,19 +38,21 @@ export async function PUT(req, { params }) {
     published,
   } = body;
 
-  const post = await prisma.post.update({
-    where: {
-      id: Number(params.id),
-    },
-    data: {
-      title,
-      content,
-      category,
-      excerpt,
-      featuredImage,
-      published,
-    },
-  });
+ const plainText = content.replace(/<[^>]*>/g, "").trim();
+
+const post = await prisma.post.update({
+  where: {
+    id: Number(params.id),
+  },
+  data: {
+    title,
+    content,
+    category,
+    excerpt: excerpt || plainText.slice(0, 180),
+    featuredImage,
+    published,
+  },
+});
 
   return NextResponse.json(post);
 }

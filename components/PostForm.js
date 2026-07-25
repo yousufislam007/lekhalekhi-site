@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import RichEditor from "@/components/editor/RichEditor";
 
 const CATEGORIES = [
   { value: 'golpo', label: 'ছোট গল্প' },
@@ -151,16 +152,16 @@ async function handleImageUpload(e) {
   )}
 </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">লেখার মূল অংশ</label>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-          rows={14}
-          className="w-full border border-brand-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500 leading-relaxed"
-        />
-      </div>
+     <div>
+  <label className="block text-sm font-medium mb-2">
+    লেখার মূল অংশ
+  </label>
+
+  <RichEditor
+    value={content}
+    onChange={setContent}
+  />
+</div>
 
       <label className="flex items-center gap-2 text-sm">
         <input

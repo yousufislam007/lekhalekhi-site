@@ -1,17 +1,13 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import PostMeta from "@/components/PostMeta";
+import { generatePostMetadata } from "@/lib/seo";
+import RelatedPosts from "@/components/RelatedPosts";
+import PostNavigation from "@/components/PostNavigation";
 
 export async function generateMetadata({ params }) {
-  const slug = decodeURIComponent(params.slug);
-
-  const post = await prisma.post.findUnique({
-    where: { slug },
-  });
-
-  return {
-    title: post ? `${post.title} | আমার লেখালেখি` : "ছোট গল্প",
-  };
+  return generatePostMetadata(params, "kobita");
 }
 
 export default async function KobitaSinglePage({ params }) {
@@ -50,14 +46,10 @@ export default async function KobitaSinglePage({ params }) {
         {post.title}
       </h1>
 
-      {/* Date */}
-      <p className="mt-4 text-sm text-gray-500">
-        {new Date(post.createdAt).toLocaleDateString("bn-BD", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </p>
+      <PostMeta
+        title={post.title}
+        createdAt={post.createdAt}
+      />
 
       <hr className="my-8" />
 
@@ -65,6 +57,16 @@ export default async function KobitaSinglePage({ params }) {
       <div
         className="prose-bangla max-w-none"
         dangerouslySetInnerHTML={{ __html: post.content }}
+      />
+
+      <PostNavigation
+        currentPostId={post.id}
+        category={post.category}
+      />
+
+      <RelatedPosts
+        currentPostId={post.id}
+        category={post.category}
       />
     </article>
   );

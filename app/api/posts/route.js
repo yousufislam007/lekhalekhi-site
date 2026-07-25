@@ -67,17 +67,19 @@ export async function POST(req) {
     );
   }
 
-  const post = await prisma.post.create({
-    data: {
-      title,
-      content,
-      excerpt: excerpt || content.slice(0, 150),
-      category,
-      slug: slugify(title),
-      featuredImage,
-      published: published !== false,
-    },
-  });
+ const plainText = content.replace(/<[^>]*>/g, "").trim();
+
+const post = await prisma.post.create({
+  data: {
+    title,
+    content,
+    excerpt: excerpt || plainText.slice(0, 180),
+    category,
+    slug: slugify(title),
+    featuredImage: featuredImage || null,
+    published: published !== false,
+  },
+});
 
   return NextResponse.json(post, {
     status: 201,
