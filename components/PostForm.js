@@ -26,6 +26,10 @@ export default function PostForm({ initialData, postId }) {
   initialData?.featuredImage || ""
 );
 
+const [featuredImageId, setFeaturedImageId] = useState(
+  initialData?.featuredImageId || ""
+);
+
 const [uploading, setUploading] = useState(false);
 
 async function handleImageUpload(e) {
@@ -48,6 +52,7 @@ async function handleImageUpload(e) {
 
     if (data.url) {
       setFeaturedImage(data.url);
+      setFeaturedImageId(data.publicId);
     } else {
       alert(data.error || "Upload failed");
     }
@@ -70,7 +75,15 @@ async function handleImageUpload(e) {
     const res = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, category, excerpt, content,featuredImage, published }),
+body: JSON.stringify({
+  title,
+  category,
+ excerpt,
+  content,
+  featuredImage,
+  featuredImageId,
+  published,
+}),
     });
 
     setLoading(false);

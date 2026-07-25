@@ -34,6 +34,7 @@ export async function POST(req) {
     return NextResponse.json({
       success: true,
       url: result.secure_url,
+      publicId: result.public_id,
     });
 
   } catch (err) {

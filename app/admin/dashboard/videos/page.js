@@ -30,8 +30,16 @@ export default async function AdminVideosPage() {
           <div className="grid sm:grid-cols-2 gap-6">
             {videos.map((video) => (
               <div key={video.id} className="bg-white border border-brand-100 rounded-2xl overflow-hidden">
-                <video src={`/uploads/${video.filename}`} className="w-full aspect-video bg-black" controls preload="metadata" />
-                <div className="p-4 flex items-center justify-between gap-2">
+<video
+  src={
+    video.filename.startsWith("http")
+      ? video.filename
+      : `/uploads/${video.filename}`
+  }
+  className="w-full aspect-video bg-black"
+  controls
+  preload="metadata"
+/>                <div className="p-4 flex items-center justify-between gap-2">
                   <p className="font-medium text-brand-900">{video.title}</p>
                   <DeleteButton url={`/api/videos/${video.id}`} confirmText="ভিডিওটি মুছে ফেলতে চান?" />
                 </div>

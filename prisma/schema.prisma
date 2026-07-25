@@ -1,28 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-// category:
-// golpo = ছোট গল্প
-// kobita = কবিতা
-// uponnash = উপন্যাস
-
 model Post {
-  id             Int      @id @default(autoincrement())
-  title          String
-  slug           String   @unique
-  excerpt        String?
-  content        String
-  category       String
-  featuredImage  String?
-  published      Boolean  @default(true)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  title            String
+  slug             String   @unique
+  excerpt          String?
+  content          String
+  category         String
+  published        Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  featuredImage    String?
+  featuredImageId  String?
 }
 
 model Video {
@@ -32,6 +29,7 @@ model Video {
   filename    String
   published   Boolean  @default(true)
   createdAt   DateTime @default(now())
+  publicId    String?
 }
 
 model Subscriber {

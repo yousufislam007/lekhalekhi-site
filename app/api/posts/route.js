@@ -13,7 +13,6 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url);
 
   const category = searchParams.get("category");
-
   const includeUnpublished = isAdminRequest(req);
 
   const posts = await prisma.post.findMany({
@@ -32,12 +31,8 @@ export async function GET(req) {
 export async function POST(req) {
   if (!isAdminRequest(req)) {
     return NextResponse.json(
-      {
-        error: "অনুমতি নেই",
-      },
-      {
-        status: 401,
-      }
+      { error: "অনুমতি নেই" },
+      { status: 401 }
     );
   }
 
@@ -49,6 +44,7 @@ export async function POST(req) {
     category,
     excerpt,
     featuredImage,
+    featuredImageId,
     published,
   } = body;
 
@@ -67,19 +63,20 @@ export async function POST(req) {
     );
   }
 
- const plainText = content.replace(/<[^>]*>/g, "").trim();
+  const plainText = content.replace(/<[^>]*>/g, "").trim();
 
-const post = await prisma.post.create({
-  data: {
-    title,
-    content,
-    excerpt: excerpt || plainText.slice(0, 180),
-    category,
-    slug: slugify(title),
-    featuredImage: featuredImage || null,
-    published: published !== false,
-  },
-});
+  const post = await prisma.post.create({
+    data: {
+      title,
+      content,
+      category,
+      slug: slugify(title),
+      excerpt: excerpt || plainText.slice(0, 180),
+      featuredImage: featuredImage || null,
+      featuredImageId: featuredImageId || null,
+      published: published !== false,
+    },
+  });
 
   return NextResponse.json(post, {
     status: 201,
