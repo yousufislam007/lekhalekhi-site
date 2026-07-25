@@ -1,8 +1,7 @@
 node_modules
 .next
 .env
-*.db
-*.sqlite
+
 
 .env.local
 public/uploads/
