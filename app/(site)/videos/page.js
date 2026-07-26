@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { prisma } from '@/lib/prisma';
 import VideoCard from '@/components/VideoCard';
 
@@ -8,6 +9,8 @@ export default async function VideosPage() {
     where: { published: true },
     orderBy: { createdAt: 'desc' },
   });
+
+  console.log("VIDEOS PAGE:", videos);
 
   return (
     <div>
