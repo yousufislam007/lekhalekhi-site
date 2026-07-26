@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ContactModal from "./ContactModal";
 
 const navLinks = [
   { href: "/", label: "হোম" },
@@ -14,9 +15,15 @@ const navLinks = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [openContact, setOpenContact] = useState(false);
 
   return (
     <>
+      <ContactModal
+        open={openContact}
+        onClose={() => setOpenContact(false)}
+      />
+
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-xl shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
 
@@ -41,7 +48,6 @@ export default function Header() {
           </Link>
 
           {/* Desktop Menu */}
-
           <nav className="hidden items-center gap-2 lg:flex">
             {navLinks.map((item) => (
               <Link
@@ -55,7 +61,6 @@ export default function Header() {
           </nav>
 
           {/* Desktop Right */}
-
           <div className="hidden items-center gap-3 lg:flex">
             <Link
               href="/search"
@@ -64,16 +69,15 @@ export default function Header() {
               🔍
             </Link>
 
-            <Link
-              href="/about"
+            <button
+              onClick={() => setOpenContact(true)}
               className="rounded-full bg-emerald-600 px-5 py-2 font-semibold text-white transition hover:bg-emerald-700"
             >
               যোগাযোগ
-            </Link>
+            </button>
           </div>
 
           {/* Mobile Button */}
-
           <button
             onClick={() => setOpen(!open)}
             className="rounded-xl border border-gray-300 p-3 transition hover:bg-gray-100 lg:hidden"
@@ -84,7 +88,6 @@ export default function Header() {
       </header>
 
       {/* Overlay */}
-
       {open && (
         <div
           onClick={() => setOpen(false)}
@@ -93,7 +96,6 @@ export default function Header() {
       )}
 
       {/* Mobile Menu */}
-
       <div
         className={`fixed top-0 right-0 z-50 h-screen w-80 bg-white shadow-2xl transition-transform duration-300 lg:hidden ${
           open ? "translate-x-0" : "translate-x-full"
@@ -132,13 +134,15 @@ export default function Header() {
             🔍 সার্চ
           </Link>
 
-          <Link
-            href="/about"
-            onClick={() => setOpen(false)}
+          <button
+            onClick={() => {
+              setOpen(false);
+              setOpenContact(true);
+            }}
             className="mt-3 rounded-xl bg-emerald-600 px-4 py-4 text-center font-semibold text-white transition hover:bg-emerald-700"
           >
             যোগাযোগ
-          </Link>
+          </button>
         </nav>
       </div>
     </>

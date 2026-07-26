@@ -16,19 +16,31 @@ export async function GET(request) {
         {
           title: {
             contains: q,
+            mode: "insensitive",
           },
         },
         {
           excerpt: {
             contains: q,
+            mode: "insensitive",
           },
         },
         {
           content: {
             contains: q,
+            mode: "insensitive",
           },
         },
       ],
+    },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      category: true,
+      createdAt: true,
+      featuredImage: true,
     },
     orderBy: {
       createdAt: "desc",
