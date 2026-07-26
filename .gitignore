@@ -4,4 +4,5 @@ node_modules
 *.db
 *.sqlite
 .env.local
+.env.example
 public/uploads/
