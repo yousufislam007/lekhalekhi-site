@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import PostCard from "@/components/PostCard";
 import VideoCard from "@/components/VideoCard";
 import Newsletter from "@/components/Newsletter";
+import FadeInSection from "@/components/FadeInSection";
 
 async function getHomeData() {
   const [featured, golpo, kobita, uponnash, videos] = await Promise.all([
@@ -78,7 +79,7 @@ export default async function HomePage() {
     <main className="space-y-20">
 
       {/* HERO */}
-
+ <FadeInSection delay={0}>
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-900 via-emerald-700 to-teal-700 text-white">
 
         <div className="absolute -top-24 -left-20 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div>
@@ -134,8 +135,10 @@ export default async function HomePage() {
         </div>
 
       </section>
+</FadeInSection>
 
 {featured && (
+  <FadeInSection delay={0.1}>
   <section className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl">
     <div className="grid lg:grid-cols-2">
       {/* Left */}
@@ -211,53 +214,63 @@ export default async function HomePage() {
       </div>
     </div>
   </section>
+  </FadeInSection>
 )}
-
+<FadeInSection delay={0.2}>
 <Section
   title="📖 সর্বশেষ ছোট গল্প"
   href="/chuto-golpo"
   posts={golpo}
 />
+</FadeInSection>
 
+<FadeInSection delay={0.3}>
 <Section
   title="✍️ সাম্প্রতিক কবিতা"
   href="/kobita"
   posts={kobita}
 />
+</FadeInSection>
 
+<FadeInSection delay={0.4}>
 <Section
   title="📚 চলমান উপন্যাস"
   href="/uponnash"
   posts={uponnash}
 />
+</FadeInSection>
 
-{videos.length > 0 && (
-  <section>
-    <div className="mb-8 flex items-center justify-between">
-      <h2 className="text-3xl font-bold">
-        🎥 সাম্প্রতিক ভিডিও
-      </h2>
+<FadeInSection delay={0.5}>
+  {videos.length > 0 && (
+    <section>
+      <div className="mb-8 flex items-center justify-between">
+        <h2 className="text-3xl font-bold">
+          🎥 সাম্প্রতিক ভিডিও
+        </h2>
 
-      <Link
-        href="/videos"
-        className="font-medium text-emerald-700 hover:underline"
-      >
-        সব ভিডিও →
-      </Link>
-    </div>
+        <Link
+          href="/videos"
+          className="font-medium text-emerald-700 hover:underline"
+        >
+          সব ভিডিও →
+        </Link>
+      </div>
 
-    <div className="grid gap-8 md:grid-cols-2">
-      {videos.map((video) => (
-        <VideoCard key={video.id} video={video} />
-      ))}
-    </div>
-  </section>
-)}
+      <div className="grid gap-8 md:grid-cols-2">
+        {videos.map((video) => (
+          <VideoCard key={video.id} video={video} />
+        ))}
+      </div>
+    </section>
+  )}
+</FadeInSection>
 
-<Newsletter />
+<FadeInSection delay={0.6}>
+  <Newsletter />
+</FadeInSection>
 
-    </main>
-  );
+</main>
+);
 }
 
 function Section({
@@ -269,7 +282,7 @@ function Section({
   if (!posts.length) return null;
 
   return (
-
+<FadeInSection delay={0.1}>
     <section>
 
       <div className="mb-8 flex items-center justify-between">
@@ -299,6 +312,7 @@ function Section({
       </div>
 
     </section>
+</FadeInSection>
 
   );
 
