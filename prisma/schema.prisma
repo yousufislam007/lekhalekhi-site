@@ -20,6 +20,7 @@ model Post {
 
   featuredImage    String?
   featuredImageId  String?
+  views Int @default(0)
 }
 
 model Video {
